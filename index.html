@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iPad Web App Game</title>
+    <style>
+        body { font-family: -apple-system, sans-serif; background-color: #1e1e2e; color: #cdd6f4; text-align: center; padding: 40px 20px; }
+        .card { background: #313244; max-width: 400px; margin: 0 auto; padding: 30px; border-radius: 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+        h1 { color: #f5c2e7; margin-bottom: 20px; }
+        button { background: #89b4fa; color: #11111b; border: none; padding: 12px 24px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.2s; margin-top: 15px; }
+        button:active { transform: scale(0.95); background: #b4befe; }
+        input { background: #45475a; color: #cdd6f4; border: 1px solid #585b70; padding: 12px; border-radius: 8px; font-size: 16px; text-align: center; width: 80%; }
+        #feedback { margin-top: 20px; font-size: 18px; font-weight: bold; min-height: 24px; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h1>🔢 Web Guessing Game</h1>
+    <p>I am thinking of a number between 1 and 100.</p>
+    
+    <input type="number" id="userGuess" placeholder="Enter your guess" min="1" max="100">
+    <br>
+    <button onclick="checkGuess()">Submit Guess</button>
+    
+    <div id="feedback"></div>
+</div>
+
+<script>
+    // Generate the secret number right in the browser session
+    const secretPercent = Math.floor(Math.random() * 100) + 1;
+    let attempts = 0;
+
+    function checkGuess() {
+        const inputField = document.getElementById("userGuess");
+        const feedback = document.getElementById("feedback");
+        const guess = parseInt(inputField.value);
+        
+        if (isNaN(guess) || guess < 1 || guess > 100) {
+            feedback.innerHTML = "❌ Enter a valid number between 1 and 100!";
+            feedback.style.color = "#f38ba8";
+            return;
+        }
+        
+        attempts++;
+        
+        if (guess < secretPercent) {
+            feedback.innerHTML = "🔼 Too Low! Try a higher number.";
+            feedback.style.color = "#89b4fa";
+        } else if (guess > secretPercent) {
+            feedback.innerHTML = "🔽 Too High! Try a lower number.";
+            feedback.style.color = "#f9e2af";
+        } else {
+            feedback.innerHTML = `🎉 WINNER! You got it in ${attempts} tries!`;
+            feedback.style.color = "#a6e3a1";
+            inputField.disabled = true;
+        }
+        inputField.value = "";
+    }
+</script>
+
+</body>
+</html>
